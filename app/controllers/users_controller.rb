@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :ensure_correct_user, only: [:update]
+  before_action :is_matching_login_user, only: [:edit, :update]
 
   def show
     @user = User.find(params[:id])
@@ -10,7 +11,7 @@ class UsersController < ApplicationController
   def index
     @users = User.all
     @book = Book.new
-    @user = User.find(params[:id])
+    @user = current_user
   end
 
   def edit
@@ -38,4 +39,10 @@ class UsersController < ApplicationController
       redirect_to user_path(current_user)
     end
   end
+    def is_matching_login_user
+    user = User.find(params[:id])
+    unless user.id == current_user.id
+      redirect_to user_path(current_user)
+    end
+    end
 end
