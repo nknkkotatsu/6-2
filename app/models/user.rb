@@ -4,8 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :books
+  has_many :books, dependent: :destroy
   has_many :favorites, dependent: :destroy
+  has_many :favorited_books, through: :favorites, source: :book
   has_many :book_comments, dependent: :destroy
   has_one_attached :profile_image
     # フォローをした、されたの関係
@@ -18,6 +19,9 @@ class User < ApplicationRecord
 
   validates :name, length: { minimum: 2, maximum: 20 }, uniqueness: true
   validates :introduction, length: {maximum: 50 }
+  #DM機能
+  has_many :entries, dependent: :destroy
+  has_many :messages, dependent: :destroy
 
   # フォローした時の処理
   def follow(user_id)
