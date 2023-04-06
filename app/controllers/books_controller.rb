@@ -5,6 +5,9 @@ before_action :is_matching_login_user, only: [:edit]
     @book = Book.find(params[:id])
     @user = @book.user
     @book_comment = BookComment.new
+    unless ReadCount.find_by(user_id: current_user.id, book_id: @book.id)
+      current_user.read_counts.create(book_id: @book.id)
+    end
   end
 
   def index

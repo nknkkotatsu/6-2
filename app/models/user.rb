@@ -22,6 +22,8 @@ class User < ApplicationRecord
   #DM機能
   has_many :entries, dependent: :destroy
   has_many :messages, dependent: :destroy
+  #閲覧数
+  has_many :read_counts, dependent: :destroy
 
   # フォローした時の処理
   def follow(user_id)
